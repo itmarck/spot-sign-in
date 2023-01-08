@@ -1,7 +1,7 @@
 {
   "name": "spot-sign-in",
   "description": "Basic package to integrate Spot in a JavaScript environment",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "license": "MIT",
   "files": [
