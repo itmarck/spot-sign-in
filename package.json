@@ -7,13 +7,13 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/spot.umd.cjs",
+  "main": "./dist/spot.umd.js",
   "module": "./dist/spot.js",
   "types": "./dist/main.d.ts",
   "exports": {
     ".": {
       "import": "./dist/spot.js",
-      "require": "./dist/spot.umd.cjs"
+      "require": "./dist/spot.umd.js"
     }
   },
   "scripts": {

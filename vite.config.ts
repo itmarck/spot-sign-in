@@ -7,7 +7,10 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, 'src/main.ts'),
       name: 'Spot',
-      fileName: 'spot',
+      fileName: (format) => {
+        if (format === 'es') return `spot.js`
+        return `spot.${format}.js`
+      },
     },
   },
   plugins: [dts()],
