@@ -1,0 +1,30 @@
+{
+  "name": "spot-sign-in",
+  "description": "Basic package to integrate Spot in a JavaScript environment",
+  "version": "0.1.0",
+  "type": "module",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/spot.umd.cjs",
+  "module": "./dist/spot.js",
+  "types": "./dist/main.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/spot.js",
+      "require": "./dist/spot.umd.cjs"
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@types/node": "18.11.18",
+    "typescript": "4.9.3",
+    "vite": "4.0.0",
+    "vite-plugin-dts": "1.7.1"
+  }
+}

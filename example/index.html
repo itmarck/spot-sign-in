@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon" />
+    <title>Example</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Example</h1>
+    <p>This is an example using <code>spot-sign-in</code> package</p>
+
+    <p id="content"></p>
+
+    <button id="login" type="button">Log in with Spot</button>
+  </body>
+
+  <script src="../dist/spot.umd.cjs"></script>
+  <script>
+    const button = document.querySelector('#login')
+    const content = document.querySelector('#content')
+
+    Spot.initialize({
+      // This is a test client id
+      clientId: '1ab5ed61db0b47ca',
+      onUserChanged: (user) => {
+        if (user) {
+          content.innerHTML = `Welcome, ${user.name}`
+          button.innerHTML = 'Log out'
+        } else {
+          content.innerHTML = ''
+          button.innerHTML = 'Log in with Spot'
+        }
+      },
+    })
+
+    button.addEventListener('click', () => {
+      if (Spot.isLoggedIn) {
+        Spot.signOut()
+      } else {
+        Spot.signInWithRedirect()
+      }
+    })
+  </script>
+</html>
