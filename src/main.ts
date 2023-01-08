@@ -1,6 +1,13 @@
 import { requestToken } from './api/oauth'
 import { getRecord, setRecord } from './api/record'
 import { getAuthenticatedUser } from './api/user'
+import {
+  addListener,
+  invokeListeners,
+  removeListeners,
+  UserCallback,
+  VoidCallback,
+} from './core/listeners'
 import { Settings } from './core/settings'
 import { CurrentUser } from './core/user'
 import { authorizeUrl } from './shared/constants'
@@ -11,13 +18,21 @@ let isLoggedIn: boolean
 let settings: Settings
 let initialized = false
 
+function onUserLoaded(callback: UserCallback) {
+  addListener('loaded', callback)
+}
+
+function onUserLoggedIn(callback: VoidCallback) {
+  addListener('login', callback)
+}
+
+function onUserSignedOut(callback: VoidCallback) {
+  addListener('logout', callback)
+}
+
 function setUser(user: CurrentUser): void {
   currentUser = user
   isLoggedIn = user !== undefined
-
-  if (settings.onUserChanged && typeof settings.onUserChanged === 'function') {
-    settings.onUserChanged(user)
-  }
 }
 
 async function sendTokenRequest(code: string) {
@@ -28,6 +43,7 @@ async function sendTokenRequest(code: string) {
   })
 
   setToken(accessToken)
+  invokeListeners('login')
 
   const url = new URL(location.href)
   url.searchParams.delete('code')
@@ -43,6 +59,8 @@ async function fetchUser() {
 
   const user = await getAuthenticatedUser({ token })
   setUser(user)
+
+  invokeListeners('loaded')
 }
 
 function initialize(options: Settings) {
@@ -79,6 +97,8 @@ function signInWithPopup() {
 function signOut() {
   removeToken()
   setUser(undefined)
+
+  invokeListeners('logout')
 }
 
 export {
@@ -90,4 +110,8 @@ export {
   signOut,
   getRecord,
   setRecord,
+  onUserLoaded,
+  onUserLoggedIn,
+  onUserSignedOut,
+  removeListeners,
 }
